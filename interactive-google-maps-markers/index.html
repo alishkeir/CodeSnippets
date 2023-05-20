@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div id="map"></div>
+
+        <script>
+            let map;
+
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: new google.maps.LatLng(35, 5),
+                    zoom: 3,
+                    scrollwheel: false,
+                    // gestureHandling: "none",
+
+                    // restrict the map to the world boundary
+                    restriction: {
+                        latLngBounds: {
+                            north: 84,
+                            south: -63,
+                            west: -170,
+                            east: 189,
+                        },
+                    },
+
+                    // disable the default UI and creates a custom UI (created with https://mapstyle.withgoogle.com/)
+                    styles: [
+                        {
+                            elementType: 'labels',
+                            stylers: [
+                                {
+                                    visibility: 'off',
+                                },
+                            ],
+                        },
+                        {
+                            featureType: 'administrative',
+                            elementType: 'geometry',
+                            stylers: [
+                                {
+                                    visibility: 'off',
+                                },
+                            ],
+                        },
+                        {
+                            featureType: 'administrative.land_parcel',
+                            stylers: [
+                                {
+                                    visibility: 'off',
+                                },
+                            ],
+                        },
+                        {
+                            featureType: 'administrative.neighborhood',
+                            stylers: [
+                                {
+                                    visibility: 'off',
+                                },
+                            ],
+                        },
+                        {
+                            featureType: 'landscape',
+                            stylers: [
+                                {
+                                    color: '#c5d2e3',
+                                },
+                            ],
+                        },
+                        {
+                            featureType: 'poi',
+                            stylers: [
+                                {
+                                    visibility: 'off',
+                                },
+                            ],
+                        },
+                        {
+                            featureType: 'road',
+                            stylers: [
+                                {
+                                    visibility: 'off',
+                                },
+                            ],
+                        },
+                        {
+                            featureType: 'road',
+                            elementType: 'labels.icon',
+                            stylers: [
+                                {
+                                    visibility: 'off',
+                                },
+                            ],
+                        },
+                        {
+                            featureType: 'transit',
+                            stylers: [
+                                {
+                                    visibility: 'off',
+                                },
+                            ],
+                        },
+                        {
+                            featureType: 'water',
+                            stylers: [
+                                {
+                                    color: '#ffffff',
+                                },
+                            ],
+                        },
+                    ],
+                });
+
+                const locations = [
+                    {
+                        latitude: 0,
+                        longitude: 0,
+                        name: '',
+                    },
+                    // ...
+                ];
+
+                // Create markers.
+                let markers = Array();
+                for (let i = 0; i < locations.length; i++) {
+                    const marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(
+                            locations[i].latitude,
+                            locations[i].longitude
+                        ),
+                        icon: {
+                            url: '', //img url to show as a marker
+                            anchor: new google.maps.Point(15, 15),
+                        },
+                        map: map,
+                    });
+
+                    const infowindow = new google.maps.InfoWindow({
+                        content: ``, //content of the marker info window <HTML code>
+                    });
+
+                    markers.push({
+                        marker,
+                        infowindow,
+                    });
+
+                    marker.addListener('click', () => {
+                        markers.forEach((item) => {
+                            item.infowindow.close();
+                        });
+                        infowindow.open({
+                            anchor: marker,
+                            map,
+                            shouldFocus: false,
+                        });
+                    });
+
+                    google.maps.event.addListener(
+                        map,
+                        'click',
+                        function (event) {
+                            infowindow.close();
+                        }
+                    );
+                }
+            }
+            window.initMap = initMap; // set the script callback to the initMap function (`&callback=initMap` means window.initMap)
+        </script>
+
+        <script
+            src="https://maps.googleapis.com/maps/api/js?sensor=false&key=<YOUR_API_KEY>&callback=initMap&v=weekly"
+            defer
+        ></script>
+    </body>
+</html>
