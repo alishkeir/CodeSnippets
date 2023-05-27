@@ -5,9 +5,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ProvidePlugin } = require('webpack');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
 let mode = 'development';
-let target = 'web';
+// let target = 'web';
 
 let id = 0;
 
@@ -19,11 +20,12 @@ const plugins = [
         jQuery: 'jquery',
         Popper: ['popper.js', 'default'],
     }),
+    new SpriteLoaderPlugin(),
 ];
 
 mode = 'production';
 // Temporary workaround for 'browserslist' bug that is being patched in the near future
-target = 'browserslist';
+// target = 'browserslist';
 
 if (process.env.SERVE) {
     // We only want React Hot Reloading in serve mode
@@ -117,6 +119,15 @@ module.exports = {
                 //   },
                 // },
             },
+            {
+                test: /\.svg$/,
+                loader: 'svg-sprite-loader',
+                options: {
+                    symbolId: (filePath) =>
+                        path.basename(filePath).slice(0, -4),
+                    extract: true,
+                },
+            },
         ],
     },
     externals: {
@@ -128,7 +139,7 @@ module.exports = {
     },
     plugins: plugins,
 
-    target: target,
+    // target: target,
 
     devtool: 'source-map',
 
