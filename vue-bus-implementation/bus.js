@@ -29,10 +29,22 @@ export default bus;
 // How to use it
 
 // 1. listen for the event and call the callback function when emitting
-//  this.$bus.on('eventName', callbackFunction);
+//  bus.on('eventName', callbackFunction);
 
 // 2. emit the event
-//  this.$bus.emit('eventName');
+//  bus.emit('eventName');
 
 // 3. remove the event from the bus events list and remove the assigned callback function
-//  this.$bus.off('eventName', callbackFunction);
+//  bus.off('eventName', callbackFunction);
+
+// configure the app to use the bus globally
+
+// main.js
+
+// import EventBus from './bus';
+// const app = createApp(App);
+
+//  ...  // <app configuration>
+
+//  Before mounting the app:
+// app.config.globalProperties.$bus = EventBus;
