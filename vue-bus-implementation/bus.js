@@ -48,3 +48,5 @@ export default bus;
 
 //  Before mounting the app:
 // app.config.globalProperties.$bus = EventBus;
+
+// now you can use the bus object as this.$bus from anywhere in the app instead if importing it everytime
